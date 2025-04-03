@@ -7,6 +7,7 @@ import plotly.express as px
 app = Dash(__name__)
 app.title = "WAF Monitoring Dashboard"
 
+# --- Function to Parse WAF Logs ---
 def parse_logs():
     log_path = "waf_logs.log"
     logs = []
@@ -27,14 +28,25 @@ def parse_logs():
 
     return pd.DataFrame(logs)
 
+# --- Prepare DataFrame ---
 df = parse_logs()
 
+# ✅ SAFEGUARD: Prevent crash if log is empty
+if df.empty:
+    df = pd.DataFrame(columns=["Timestamp", "Level", "Attack Type", "IP Address", "Payload"])
+
+# --- Dash App Layout ---
 app.layout = html.Div([
     html.H1("🛡️ WAF Dashboard", style={"textAlign": "center"}),
-    
+
     dcc.Graph(
         id='attack-chart',
-        figure=px.histogram(df, x='Attack Type', color='Attack Type', title='Attack Frequency by Type')
+        figure=px.histogram(
+            df,
+            x='Attack Type',
+            color='Attack Type',
+            title='Attack Frequency by Type'
+        )
     ),
 
     dash_table.DataTable(
@@ -47,8 +59,8 @@ app.layout = html.Div([
     )
 ])
 
+# --- Run App (Render-Compatible) ---
 if __name__ == '__main__':
     import os
     port = int(os.environ.get("PORT", 8050))
     app.run_server(debug=True, host="0.0.0.0", port=port)
-
