@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: waf-web
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn waf_app:app -w 4 -k gthread -b 0.0.0.0:$PORT
+    envVars:
+      - key: PORT
+        value: 10000
+      - key: SECRET_KEY
+        value: your-production-secret-key
+    plan: free

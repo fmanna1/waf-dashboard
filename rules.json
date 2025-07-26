@@ -1,0 +1,16 @@
+{
+  "sqli": [
+    "(?i)(\\bor\\b|\\band\\b).*(=|\\bLIKE\\b|\\bIN\\b|\\bIS\\b|\\bNULL\\b)",
+    "(?i)(union(\\s+all)?(\\s+select))",
+    "(?i)select.+from",
+    "(?i)insert\\s+into",
+    "(?i)drop\\s+table",
+    "(?i)'\\s*or\\s*'1'='1"
+  ],
+  "xss": [
+    "(?i)<script.*?>.*?</script.*?>",
+    "(?i)javascript:",
+    "(?i)onerror\\s*=",
+    "(?i)<img\\s+.*?on\\w+=.*?>"
+  ]
+}
