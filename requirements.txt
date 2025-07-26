@@ -1,3 +1,6 @@
+Flask
 dash
 pandas
 plotly
+gunicorn
+requests
